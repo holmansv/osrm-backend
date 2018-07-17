@@ -1,3 +1,19 @@
+## HSV Team Notes
+
+### TLDR
+I ran these commands on an AWS EC2 m4.16xlarge instance with attached 500GB EBS 
+
+    wget http://download.geofabrik.de/north-america-latest.osm.pbf
+
+    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-extract -p /opt/car.lua /data/north-america-latest.osm.pbf
+
+    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-partition /data/north-america-latest.osrm
+
+    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-customize /data/north-america-latest.osrm
+
+    docker run -t -i -p 8080:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --algorithm mld /data/north-america-latest.osrm
+
+
 ## Open Source Routing Machine
 
 | Linux / macOS | Windows | Code Coverage |
@@ -54,24 +70,24 @@ We base our Docker images ([backend](https://hub.docker.com/r/osrm/osrm-backend/
 
 Download OpenStreetMap extracts for example from [Geofabrik](http://download.geofabrik.de/)
 
-    wget http://download.geofabrik.de/europe/germany/berlin-latest.osm.pbf
+    wget http://download.geofabrik.de/north-america-latest.osm.pbf
 
 Pre-process the extract with the car profile and start a routing engine HTTP server on port 5000
 
-    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-extract -p /opt/car.lua /data/berlin-latest.osm.pbf
+    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-extract -p /opt/car.lua /data/north-america-latest.osm.pbf
 
-The flag `-v $(pwd):/data` creates the directory `/data` inside the docker container and makes the current working directory `$(pwd)` available there. The file `/data/berlin-latest.osm.pbf` inside the container is referring to `$(pwd)/berlin-latest.osm.pbf` on the host.
+The flag `-v $(pwd):/data` creates the directory `/data` inside the docker container and makes the current working directory `$(pwd)` available there. The file `/data/north-america-latest.osm.pbf` inside the container is referring to `$(pwd)/north-america-latest.osm.pbf` on the host.
 
-    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-partition /data/berlin-latest.osrm
-    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-customize /data/berlin-latest.osrm
+    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-partition /data/north-america-latest.osrm
+    docker run -t -v $(pwd):/data osrm/osrm-backend osrm-customize /data/north-america-latest.osrm
 
-Note that `berlin-latest.osrm` has a different file extension. 
+Note that `north-america-latest.osrm` has a different file extension. 
 
-    docker run -t -i -p 5000:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --algorithm mld /data/berlin-latest.osrm
+    docker run -t -i -p 8080:5000 -v $(pwd):/data osrm/osrm-backend osrm-routed --algorithm mld /data/north-america-latest.osrm
 
 Make requests against the HTTP server
 
-    curl "http://127.0.0.1:5000/route/v1/driving/13.388860,52.517037;13.385983,52.496891?steps=true"
+    curl "http://127.0.0.1:8080/route/v1/driving/13.388860,52.517037;13.385983,52.496891?steps=true"
 
 Optionally start a user-friendly frontend on port 9966, and open it up in your browser
 
