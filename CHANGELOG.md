@@ -1,7 +1,30 @@
 # UNRELEASED
+  - Changes from 5.19.0:
+    - Table:
+      - CHANGED: switch to pre-calculated distances for table responses for large speedup and 10% memory increase. [#5251](https://github.com/Project-OSRM/osrm-backend/pull/5251)
+      - ADDED: new parameter `fallback_speed` which will fill `null` cells with estimated value [#5257](https://github.com/Project-OSRM/osrm-backend/pull/5257)
+    - Features:
+      - ADDED: direct mmapping of datafiles is now supported via the `--mmap` switch. [#5242](https://github.com/Project-OSRM/osrm-backend/pull/5242)
+      - REMOVED: the previous `--memory_file` switch is now deprecated and will fallback to `--mmap` [#5242](https://github.com/Project-OSRM/osrm-backend/pull/5242)
+      - ADDED: all waypoints in responses now contain a `distance` property between the original coordinate and the snapped location. [#5255](https://github.com/Project-OSRM/osrm-backend/pull/5255)
+    - Windows:
+      - FIXED: Windows builds again. [#5249](https://github.com/Project-OSRM/osrm-backend/pull/5249)
+
+# 5.19.0
   - Changes from 5.18.0:
+    - Optimizations:
+      - CHANGED: Use Grisu2 for serializing floating point numbers. [#5188](https://github.com/Project-OSRM/osrm-backend/pull/5188)
+      - ADDED: Node bindings can return pre-rendered JSON buffer. [#5189](https://github.com/Project-OSRM/osrm-backend/pull/5189)
+    - Profiles:
+      - CHANGED: Bicycle profile now blacklists barriers instead of whitelisting them [#5076
+](https://github.com/Project-OSRM/osrm-backend/pull/5076/)
+      - CHANGED: Foot profile now blacklists barriers instead of whitelisting them [#5077
+](https://github.com/Project-OSRM/osrm-backend/pull/5077/)
+      - CHANGED: Support maxlength and maxweight in car profile [#5101](https://github.com/Project-OSRM/osrm-backend/pull/5101]
     - Bugfixes:
       - FIXED: collapsing of ExitRoundabout instructions [#5114](https://github.com/Project-OSRM/osrm-backend/issues/5114)
+    - Misc:
+      - CHANGED: Support up to 512 named shared memory regions [#5185](https://github.com/Project-OSRM/osrm-backend/pull/5185)
 
 # 5.18.0
   - Changes from 5.17.0:
